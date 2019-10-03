@@ -33,7 +33,7 @@ body {
   grid-row: 2 / span 1;
   display: flex;
 }
-#home_new_list_button, .item_button {
+#home_new_list_button {
   margin: auto;
   border-radius: 10px;
   cursor: pointer;
@@ -123,6 +123,7 @@ body {
 #item_heading {}
 #item_form_container {
   display: grid;
+  grid-gap: 25px;
 }
 #item_description_prompt {}
 #item_description_textfield {}
@@ -140,5 +141,5 @@ body {
   grid-column: 1 / 4;
 }
 .item_input {
-  grid-column: 2 / 4;
+  grid-column: 3 / 4;
 }
