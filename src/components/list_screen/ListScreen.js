@@ -22,6 +22,7 @@ export class ListScreen extends Component {
     render() {
         return (
             <div id="todo_list">
+                <br /> 
                 <ListHeading goHome={this.props.goHome} />
                 <ListTrash />
                 <div id="list_details_container">

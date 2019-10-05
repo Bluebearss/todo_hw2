@@ -107,7 +107,7 @@ body {
 }
 #list_details_owner_container {}
 #list_trash {
-  font-size: 40pt;
+  font-size: 36pt;
 }
 #list_trash:hover {
   color: var(--swatch-accent);
