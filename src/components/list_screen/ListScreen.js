@@ -8,17 +8,21 @@ export class ListScreen extends Component {
     getListName() {
         if (this.props.todoList) {
             let name = this.props.todoList.name;
-            return this.props.todoList.name;
+            return name;
         }
         else
             return "";
     }
+
     getListOwner() {
         if (this.props.todoList) {
             let owner = this.props.todoList.owner;
-            return this.props.todoList.owner;
+            return owner;
         }
+        else
+            return "";
     }
+
     render() {
         return (
             <div id="todo_list">
@@ -29,7 +33,8 @@ export class ListScreen extends Component {
                     <div id="list_details_name_container" className="text_toolbar">
                         <span id="list_name_prompt">Name:</span>
                         <input 
-                            value={this.getListName()} 
+                            value={this.getListName()}
+                            onChange={this.props.changeName}
                             type="text" 
                             id="list_name_textfield" />
                     </div>

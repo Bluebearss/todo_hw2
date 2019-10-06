@@ -29,6 +29,13 @@ class App extends Component {
     console.log("currentScreen: " + this.state.currentScreen);
   }
 
+  changeName = (event) =>
+  {
+    let currentList = this.state.currentList;
+    currentList.name = event.target.value;
+    this.setState({currentList});
+  }
+
   render() {
     switch(this.state.currentScreen) {
       case AppScreen.HOME_SCREEN:
@@ -38,7 +45,8 @@ class App extends Component {
       case AppScreen.LIST_SCREEN:            
         return <ListScreen
           goHome={this.goHome.bind(this)}
-          todoList={this.state.currentList} />;
+          todoList={this.state.currentList}
+          changeName={this.changeName} />;
       case AppScreen.ITEM_SCREEN:
         return <ItemScreen />;
       default:
