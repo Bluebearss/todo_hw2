@@ -36,17 +36,50 @@ class App extends Component {
     this.setState({currentList});
   }
 
+  changeOwner = (event) =>
+  {
+    let currentList = this.state.currentList;
+    currentList.owner = event.target.value;
+    this.setState({currentList});
+  }
+
+  removeList = (listToRemove) =>
+  {
+    console.log("removed");
+    let todoLists = this.state.todoLists;
+    let indexOfList = todoLists.indexOf(listToRemove);
+    if (indexOfList >= 0)
+    {
+      todoLists.splice(indexOfList, 1);
+    }
+
+    this.setState({todoLists});
+    
+  }
+
+  prependList = (listToPrepend) =>
+  {
+    console.log("prepended");
+    let todoLists = this.state.todoLists;
+    todoLists.unshift(listToPrepend);
+    this.setState({todoLists});
+    
+  }
+
   render() {
     switch(this.state.currentScreen) {
       case AppScreen.HOME_SCREEN:
         return <HomeScreen 
-        loadList={this.loadList.bind(this)} 
-        todoLists={this.state.todoLists} />;
+        loadList={this.loadList} 
+        todoLists={this.state.todoLists}
+        removeList={this.removeList} 
+        prependList={this.prependList} />;
       case AppScreen.LIST_SCREEN:            
         return <ListScreen
           goHome={this.goHome.bind(this)}
           todoList={this.state.currentList}
-          changeName={this.changeName} />;
+          changeName={this.changeName}
+          changeOwner={this.changeOwner} />;
       case AppScreen.ITEM_SCREEN:
         return <ItemScreen />;
       default:

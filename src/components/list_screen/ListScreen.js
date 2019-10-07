@@ -11,7 +11,7 @@ export class ListScreen extends Component {
             return name;
         }
         else
-            return "";
+            return "Unnknown";
     }
 
     getListOwner() {
@@ -20,7 +20,7 @@ export class ListScreen extends Component {
             return owner;
         }
         else
-            return "";
+            return "Unknown";
     }
 
     render() {
@@ -42,6 +42,7 @@ export class ListScreen extends Component {
                         <span id="list_owner_prompt">Owner:</span>
                         <input 
                             value={this.getListOwner()}
+                            onChange={this.props.changeOwner}
                             type="text" 
                             id="list_owner_textfield" />
                     </div>
