@@ -18,7 +18,9 @@ export class HomeScreen extends Component {
                 </div>
                 <Banner />
                 <div id="home_new_list_container">
-                    <button id="home_new_list_button">
+                    <button 
+                    id="home_new_list_button"
+                    onClick={this.props.createNewListOnClick}>
                         Create a New To Do List
                     </button>
                 </div>
