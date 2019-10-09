@@ -3,6 +3,7 @@ import testTodoListData from './TestTodoListData.json'
 import HomeScreen from './components/home_screen/HomeScreen'
 import ItemScreen from './components/item_screen/ItemScreen'
 import ListScreen from './components/list_screen/ListScreen'
+import ModalContainer from './components/list_screen/ModalContainer'
 
 const AppScreen = {
   HOME_SCREEN: "HOME_SCREEN",
@@ -157,14 +158,23 @@ class App extends Component {
         prependList={this.prependList}
         createNewListOnClick = {this.createNewListOnClick} />;
       case AppScreen.LIST_SCREEN:            
-        return <ListScreen
-          goHome={this.goHome.bind(this)}
-          todoList={this.state.currentList}
-          changeName={this.changeName}
-          changeOwner={this.changeOwner}
-          isCurrentItemSortCriteria={this.isCurrentItemSortCriteria}
-          sortTasks={this.sortTasks}
-          ItemSortCriteria={ItemSortCriteria} />;
+        return (
+            <React.Fragment>
+              <ListScreen
+                goHome={this.goHome.bind(this)}
+                todoList={this.state.currentList}
+                changeName={this.changeName}
+                changeOwner={this.changeOwner}
+                isCurrentItemSortCriteria={this.isCurrentItemSortCriteria}
+                sortTasks={this.sortTasks}
+                ItemSortCriteria={ItemSortCriteria} />
+
+              <ModalContainer
+              todoList={this.state.currentList}
+              removeList={this.removeList} 
+              goHome={this.goHome.bind(this)} />
+            </React.Fragment>
+            );
       case AppScreen.ITEM_SCREEN:
         return <ItemScreen />;
       default:
