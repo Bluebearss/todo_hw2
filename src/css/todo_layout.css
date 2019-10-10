@@ -192,21 +192,35 @@ body {
 }
 
 /* ITEM SCREEN CONTROLS */
-#item_heading {}
 #item_form_container {
   display: grid;
   grid-gap: 25px;
 }
-#item_description_prompt {}
-#item_description_textfield {}
-#item_assigned_to_prompt {}
-#item_assigned_to_textfield {}
-#item_due_date_prompt {}
-#item_due_date_picker {}
-#item_completed_prompt {}
-#item_completed_checkbox {}
-#item_form_submit_button {}
-#item_form_cancel_button {}
+
+#item_heading, #item_description_prompt, #item_assigned_to_prompt, #item_due_date_prompt, #item_completed_prompt
+{
+    display: block;
+    float: left;
+    clear: left;
+    width: 300px;
+    text-align: left;
+}
+
+#item_description_textfield, #item_assigned_to_textfield, #item_due_date_picker
+{
+    width: 70.3%;
+}
+
+#item_description_textfield, #item_assigned_to_textfield, #item_due_date_picker, #item_completed_checkbox
+{
+    display: block;
+    float: left;
+}
+
+#item_form_submit_button, #item_form_cancel_button
+{
+    border-radius: 8px;
+}
 
 /* ITEM SCREEN CLASSES */
 .item_prompt {
@@ -214,4 +228,14 @@ body {
 }
 .item_input {
   grid-column: 3 / 4;
+}
+
+.list_item_card_delete_item_button, .list_item_card_move_item_up_button, .list_item_card_move_item_down_button
+{
+    border-radius: 5px;
+}
+
+#list_move_item_buttons_container
+{
+    float: right;
 }

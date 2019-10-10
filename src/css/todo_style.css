@@ -130,7 +130,7 @@ body {
 .list_item_add_card:hover {
   color: var(--swatch-bright-accent);
 }
-.list_item_header_card {
+.list_item_header_card, .list_item_card_delete_item_button, .list_item_card_move_item_up_button, .list_item_card_move_item_down_button {
   background-color: var(--swatch-accent);
 }
 .list_item_task_header, .list_item_due_date_header, .list_item_status_header {
@@ -161,6 +161,13 @@ body {
   color: red;
 }
 .list_item_card_toolbar {}
+.list_item_card_delete_item_button, .list_item_card_move_item_up_button, .list_item_card_move_item_down_button
+{
+    width:  40px;
+    height: 40px;
+    margin: 2px;
+}
+
 .list_item_card_button {
   background-color: var(--swatch-accent);
   color: var(--swatch-neutral);
@@ -201,6 +208,27 @@ font-size: 16pt;
 }
 .item_button {
 font-size: 16pt;
+}
+
+#item_heading, #item_description_prompt, #item_assigned_to_prompt, #item_due_date_prompt, #item_completed_prompt
+{
+    font-weight: bold;
+}
+
+#item_description_textfield, #item_assigned_to_textfield, #item_due_date_picker
+{
+    font-size: 14.5pt;
+}
+
+#item_form_submit_button, #item_form_cancel_button
+{
+    font-size: 14.5pt;
+}
+
+.list_item_card_move_item_up_button.disabled, .list_item_card_move_item_down_button.disabled
+{
+    background-color: #D3D3D3;
+    
 }
 
 /* FOR A MODAL DIALOG */

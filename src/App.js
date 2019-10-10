@@ -72,10 +72,25 @@ class App extends Component {
     this.setState({todoLists});
   }
 
+  createNewListKey = () =>
+  {
+    let biggestKey = this.state.todoLists[0].key;
+
+    for (var i = 0; i < this.state.todoLists.length; i++)
+    {
+      if (this.state.todoLists[i].key > biggestKey)
+      {
+        biggestKey = this.state.todoLists[i].key;
+      }
+    }
+
+    return biggestKey + 1;
+  }
+
   createNewListOnClick = () =>
   {
     let newToDoList = {}; // {} means new Object as a literal
-    newToDoList.key = this.state.todoLists.length; // Previous length is new length - 1
+    newToDoList.key = this.createNewListKey(); // CreateNewListKey finds biggest key currently and adds 1 to it.
     newToDoList.name = "Unnknown";
     newToDoList.owner = "Unknown";
     newToDoList.items = [];
@@ -148,6 +163,74 @@ class App extends Component {
         }
   }
 
+  getPrevOrNextItemKey = (itemKey, prevOrNext) =>
+  {
+    let items = this.state.currentList.items;
+
+    for (var i = 0; i < items.length; i++)
+    {
+      if (items[i].key === itemKey)
+      {
+        if ((i + prevOrNext) >= 0 && (i + prevOrNext) < items.length)
+        {
+          return items[i + prevOrNext].key;
+        }
+      }
+    }
+  }
+
+  swapItems = (item1Key, item2Key) =>
+  {
+    if (this.state.currentList != null)
+    {
+      let currentList = this.state.currentList;
+      let items = currentList.items;
+      let item1 = items[0];
+      let item2 = items[1];
+      for (var i = 0; i < items.length; i++)
+      {
+        if (items[i].key === item1Key)
+        {
+          item1 = items[i];
+        }
+
+        if (items[i].key === item2Key)
+        {
+          item2 = items[i];
+        }
+      }
+
+      let item1Index = items.indexOf(item1);
+      let item2Index = items.indexOf(item2);
+
+      items[item1Index] = items[item2Index];
+      items[item2Index] = item1;
+
+      this.setState({currentList});
+    }
+  }
+
+  deleteItem = (deleteItemKey) =>
+  {
+    let currentList = this.state.currentList;
+    let items = currentList.items;
+    let deleteItem = items[0];
+
+    for (var i = 0; i < items.length; i++)
+    {
+      if (items[i].key === deleteItemKey)
+      {
+        deleteItem = items[i];
+        break;
+      }
+    }
+
+    let deleteItemIndex = items.indexOf(deleteItem);
+    items.splice(deleteItemIndex, 1);
+
+    this.setState({currentList});
+  }
+
   render() {
     switch(this.state.currentScreen) {
       case AppScreen.HOME_SCREEN:
@@ -167,7 +250,10 @@ class App extends Component {
                 changeOwner={this.changeOwner}
                 isCurrentItemSortCriteria={this.isCurrentItemSortCriteria}
                 sortTasks={this.sortTasks}
-                ItemSortCriteria={ItemSortCriteria} />
+                ItemSortCriteria={ItemSortCriteria} 
+                swapItems={this.swapItems}
+                getPrevOrNextItemKey={this.getPrevOrNextItemKey}
+                deleteItem={this.deleteItem} />
 
               <ModalContainer
               todoList={this.state.currentList}

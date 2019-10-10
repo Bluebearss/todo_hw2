@@ -51,7 +51,10 @@ export class ListScreen extends Component {
                 todoList={this.props.todoList}
                 isCurrentItemSortCriteria={this.props.isCurrentItemSortCriteria}
                 sortTasks={this.props.sortTasks}
-                ItemSortCriteria={this.props.ItemSortCriteria} />
+                ItemSortCriteria={this.props.ItemSortCriteria}
+                swapItems={this.props.swapItems}
+                getPrevOrNextItemKey={this.props.getPrevOrNextItemKey}
+                deleteItem={this.props.deleteItem} />
             </div>
         )
     }
