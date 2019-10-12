@@ -26,6 +26,7 @@ class App extends Component {
     todoLists: testTodoListData.todoLists,
     currentList: null,
     currentItemSortCriteria: "",
+    editItem: null,
   }
 
   goHome = () => {
@@ -36,6 +37,12 @@ class App extends Component {
   loadList = (todoListToLoad) => {
     this.setState({currentScreen: AppScreen.LIST_SCREEN}, () => {console.log("currentScreen: " + this.state.currentScreen)});
     this.setState({currentList: todoListToLoad}, () => {console.log("currentList: " + this.state.currentList)});
+  }
+
+  loadItem = (todoItemToLoad) =>
+  {
+    this.setState({currentScreen: AppScreen.ITEM_SCREEN}, () => {console.log("currentScreen: " + this.state.currentScreen)});
+    this.setState({editItem: todoItemToLoad}, () => {console.log("currentItem: " + this.state.editItem)});
   }
 
   changeName = (event) =>
@@ -74,6 +81,11 @@ class App extends Component {
 
   createNewListKey = () =>
   {
+    if (this.state.todoLists.length === 0)
+    {
+      return 0;
+    }
+
     let biggestKey = this.state.todoLists[0].key;
 
     for (var i = 0; i < this.state.todoLists.length; i++)
@@ -210,7 +222,7 @@ class App extends Component {
     }
   }
 
-  deleteItem = (deleteItemKey) =>
+  deleteItem = (event, deleteItemKey) =>
   {
     let currentList = this.state.currentList;
     let items = currentList.items;
@@ -229,6 +241,91 @@ class App extends Component {
     items.splice(deleteItemIndex, 1);
 
     this.setState({currentList});
+
+    event.stopPropagation();
+  }
+
+  createNewItemKey = () =>
+  {
+    if (this.state.currentList.items.length === 0)
+    {
+      return 0;
+    }
+
+    let biggestKey = this.state.currentList.items[0].key;
+
+    for (var i = 0; i < this.state.currentList.items.length; i++)
+    {
+      if (this.state.currentList.items[i].key > biggestKey)
+      {
+        biggestKey = this.state.currentList.items[i].key;
+      }
+    }
+
+    return biggestKey + 1;
+  }
+
+  createNewItemOnClick = () =>
+  {
+    let newToDoItem = {};
+    newToDoItem.key = this.createNewItemKey(); // CreateNewItemKey finds biggest item key currently in the list and adds 1 to it.
+    newToDoItem.description = "Unknown";
+    newToDoItem.assigned_to = "Unknown";
+    newToDoItem.completed = false;
+    newToDoItem.due_date = "Unknown";
+
+    let editItem = this.state.editItem;
+    editItem = newToDoItem;
+
+    this.setState({editItem}, () => {this.loadItem(this.state.editItem)});
+  }
+
+  changeDescription = (event) =>
+  {
+    let editItem = this.state.editItem;
+    editItem.description = event.target.value;
+    this.setState({editItem});
+  }
+
+  changeAssignedTo = (event) =>
+  {
+    let editItem = this.state.editItem;
+    editItem.assigned_to = event.target.value;
+    this.setState({editItem});
+  }
+
+  changeDueDate = (event) =>
+  {
+    let editItem = this.state.editItem;
+    editItem.due_date = event.target.value;
+    this.setState({editItem});
+  }
+
+  changeCompleted = (event) =>
+  {
+    let editItem = this.state.editItem;
+    editItem.completed = event.target.checked;
+    this.setState({editItem});
+  }
+
+  editItem = (itemKey) =>
+  {
+    let itemToEdit = this.state.currentList.items[0];
+    let editItem = this.state.editItem;
+
+    for (var i = 0; i < this.state.currentList.items.length; i++)
+    {
+      if (this.state.currentList.items[i].key === itemKey)
+      {
+        itemToEdit = this.state.currentList.items[i];
+      }
+    }
+
+    if (itemToEdit)
+    {
+      editItem = itemToEdit;
+      this.setState({editItem}, () => {this.loadItem(this.state.editItem)});
+    }
   }
 
   render() {
@@ -253,7 +350,9 @@ class App extends Component {
                 ItemSortCriteria={ItemSortCriteria} 
                 swapItems={this.swapItems}
                 getPrevOrNextItemKey={this.getPrevOrNextItemKey}
-                deleteItem={this.deleteItem} />
+                deleteItem={this.deleteItem}
+                createNewItemOnClick={this.createNewItemOnClick}
+                editItem={this.editItem} />
 
               <ModalContainer
               todoList={this.state.currentList}
@@ -262,7 +361,12 @@ class App extends Component {
             </React.Fragment>
             );
       case AppScreen.ITEM_SCREEN:
-        return <ItemScreen />;
+        return <ItemScreen
+                  todoItem={this.state.editItem}
+                  changeDescription={this.changeDescription}
+                  changeAssignedTo={this.changeAssignedTo}
+                  changeDueDate={this.changeDueDate}
+                  changeCompleted={this.changeCompleted} />;
       default:
         return <div>ERROR</div>;
     }

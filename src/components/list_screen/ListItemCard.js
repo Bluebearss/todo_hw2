@@ -16,7 +16,7 @@ export class ListItemCard extends Component {
         }
     }
 
-    moveItemUp = (moveUpItemKey) =>
+    moveItemUp = (event, moveUpItemKey) =>
     {
         let prevMoveUpItemKey = this.props.getPrevOrNextItemKey(moveUpItemKey, -1);
 
@@ -24,9 +24,11 @@ export class ListItemCard extends Component {
         {
             this.props.swapItems(prevMoveUpItemKey, moveUpItemKey);
         }
+
+        event.stopPropagation();
     }
 
-    moveItemDown = (moveDownItemKey) =>
+    moveItemDown = (event, moveDownItemKey) =>
     {
         let nextMoveDownItemKey = this.props.getPrevOrNextItemKey(moveDownItemKey, 1);
 
@@ -34,11 +36,16 @@ export class ListItemCard extends Component {
         {
             this.props.swapItems(moveDownItemKey, nextMoveDownItemKey);
         }
+
+        event.stopPropagation();
     }
 
     render() {
         return (
-            <div className='list_item_card'>
+            <div 
+            className='list_item_card'
+            onClick={this.props.editItem.bind(this, this.props.listItem.key)}
+            >
                 <div className='list_item_card_description'>
                     {this.props.listItem.description}
                 </div>
@@ -54,19 +61,19 @@ export class ListItemCard extends Component {
                     src={MoveUp} 
                     alt="MoveUpButton"
                     className="list_item_card_move_item_up_button"
-                    onClick={this.moveItemUp.bind(this, this.props.listItem.key)}>
+                    onClick={(event) => {this.moveItemUp(event, this.props.listItem.key)}}>
                     </img>
                     <img 
                     src={MoveDown} 
                     alt="MoveDownButton"
                     className="list_item_card_move_item_down_button"
-                    onClick={this.moveItemDown.bind(this, this.props.listItem.key)}>
+                    onClick={(event) => {this.moveItemDown(event, this.props.listItem.key)}}>
                     </img>
                     <img 
                     src={Close} 
                     alt="DeleteButton"
                     className="list_item_card_delete_item_button"
-                    onClick={this.props.deleteItem.bind(this, this.props.listItem.key)}>
+                    onClick={(event) => {this.props.deleteItem(event, this.props.listItem.key)}}>
                     </img>
                 </div>
             </div>

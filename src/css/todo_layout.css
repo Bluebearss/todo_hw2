@@ -51,7 +51,7 @@ body {
   left: 85%;
   width: 15%;
   text-align: right;
-  top: 5.8%;
+  top: 5%;
 }
 #list_details_container {
   padding-left: 2%;
@@ -220,6 +220,11 @@ body {
 #item_form_submit_button, #item_form_cancel_button
 {
     border-radius: 8px;
+}
+
+#item_form_cancel_button
+{
+  margin-left: 5.8px;
 }
 
 /* ITEM SCREEN CLASSES */

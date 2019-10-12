@@ -54,7 +54,9 @@ export class ListScreen extends Component {
                 ItemSortCriteria={this.props.ItemSortCriteria}
                 swapItems={this.props.swapItems}
                 getPrevOrNextItemKey={this.props.getPrevOrNextItemKey}
-                deleteItem={this.props.deleteItem} />
+                deleteItem={this.props.deleteItem}
+                createNewItemOnClick={this.props.createNewItemOnClick}
+                editItem={this.props.editItem} />
             </div>
         )
     }

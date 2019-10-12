@@ -71,9 +71,16 @@ export class ListItemsTable extends Component {
                             key={todoItem.key}
                             swapItems={this.props.swapItems}
                             getPrevOrNextItemKey={this.props.getPrevOrNextItemKey}
-                            deleteItem={this.props.deleteItem} />
+                            deleteItem={this.props.deleteItem}
+                            editItem={this.props.editItem} />
                     ))
                 }
+
+                <div
+                className = "list_item_add_card"
+                onClick={this.props.createNewItemOnClick}>
+                    +
+                </div>
             </div>
         )
     }
