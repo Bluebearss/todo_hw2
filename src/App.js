@@ -27,6 +27,7 @@ class App extends Component {
     currentList: null,
     currentItemSortCriteria: "",
     editItem: null,
+    prevCurrentList: null,
   }
 
   goHome = () => {
@@ -39,10 +40,11 @@ class App extends Component {
     this.setState({currentList: todoListToLoad}, () => {console.log("currentList: " + this.state.currentList)});
   }
 
-  loadItem = (todoItemToLoad) =>
+  loadItem = (todoItemToLoad, pastCurrentList) =>
   {
     this.setState({currentScreen: AppScreen.ITEM_SCREEN}, () => {console.log("currentScreen: " + this.state.currentScreen)});
     this.setState({editItem: todoItemToLoad}, () => {console.log("currentItem: " + this.state.editItem)});
+    this.setState({prevCurrentList: pastCurrentList});
   }
 
   changeName = (event) =>
@@ -275,9 +277,10 @@ class App extends Component {
     newToDoItem.due_date = "Unknown";
 
     let editItem = this.state.editItem;
+    let oldCurrentList = this.state.currentList;
     editItem = newToDoItem;
 
-    this.setState({editItem}, () => {this.loadItem(this.state.editItem)});
+    this.setState({editItem}, () => {this.loadItem(this.state.editItem, oldCurrentList)});
   }
 
   changeDescription = (event) =>
@@ -318,14 +321,59 @@ class App extends Component {
       if (this.state.currentList.items[i].key === itemKey)
       {
         itemToEdit = this.state.currentList.items[i];
+        break;
       }
     }
 
     if (itemToEdit)
     {
       editItem = itemToEdit;
-      this.setState({editItem}, () => {this.loadItem(this.state.editItem)});
+
+      let oldCurrentList = {};
+      oldCurrentList.key = this.state.currentList.key;
+      oldCurrentList.name = this.state.currentList.name;
+      oldCurrentList.owner = this.state.currentList.owner;
+      oldCurrentList.items = [];
+      
+      for (var j = 0; j < this.state.currentList.items.length; j++)
+      {
+        let item = {};
+        item.key = this.state.currentList.items[j].key;
+        item.assigned_to = this.state.currentList.items[j].assigned_to;
+        item.completed = this.state.currentList.items[j].completed;
+        item.description = this.state.currentList.items[j].description;
+        item.due_date = this.state.currentList.items[j].due_date;
+        oldCurrentList.items.push(item);
+      }
+
+      this.setState({editItem}, () => {this.loadItem(this.state.editItem, oldCurrentList)});
     }
+  }
+
+  confirmItemChanges = () =>
+  {
+    let currentList = this.state.currentList;
+    let editItem = this.state.editItem;
+
+    if (editItem != null)
+    {
+      if (!currentList.items.includes(editItem))
+      {
+        currentList.items.push(editItem);
+        this.setState({currentList}, () => {this.loadList(currentList)});
+      }
+      else
+      {
+        this.loadList(currentList);
+      }
+    }
+  }
+
+  cancelItemChanges = () =>
+  {
+    let prevCurrentList = this.state.prevCurrentList;
+
+    this.loadList(prevCurrentList);
   }
 
   render() {
@@ -366,7 +414,9 @@ class App extends Component {
                   changeDescription={this.changeDescription}
                   changeAssignedTo={this.changeAssignedTo}
                   changeDueDate={this.changeDueDate}
-                  changeCompleted={this.changeCompleted} />;
+                  changeCompleted={this.changeCompleted}
+                  confirmItemChanges={this.confirmItemChanges}
+                  cancelItemChanges={this.cancelItemChanges} />;
       default:
         return <div>ERROR</div>;
     }

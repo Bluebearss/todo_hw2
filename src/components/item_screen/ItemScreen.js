@@ -92,8 +92,12 @@ export class ItemScreen extends Component {
                         id = "item_completed_checkbox" />
                     </div>
                     <div id = "item_form_button_container">
-                        <button id = "item_form_submit_button">Submit</button>
-                        <button id = "item_form_cancel_button">Cancel</button>
+                        <button 
+                        id = "item_form_submit_button"
+                        onClick={this.props.confirmItemChanges}>Submit</button>
+                        <button 
+                        id = "item_form_cancel_button"
+                        onClick={this.props.cancelItemChanges}>Cancel</button>
                     </div>
                 </div>
             </div>

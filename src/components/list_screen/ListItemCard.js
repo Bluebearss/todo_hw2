@@ -16,6 +16,28 @@ export class ListItemCard extends Component {
         }
     }
 
+    setImgDisabled(event, ItemIndex)
+    {
+        console.log(ItemIndex);
+        if (ItemIndex === 0 || ItemIndex === this.props.getListLength() - 1)
+        {
+            if (ItemIndex === 0)
+            {
+                event.target.classList.add("disabled");
+            }
+
+            if (ItemIndex === this.props.getListLength() - 1)
+            {
+                event.target.classList.add("disabled");
+            }
+        }
+        else
+        {
+            document.getElementById("list_item_card_move_item_up_button").classList.remove("disabled");
+            document.getElementById("list_item_card_move_item_down_button").classList.remove("disabled");
+        }
+    }
+
     moveItemUp = (event, moveUpItemKey) =>
     {
         let prevMoveUpItemKey = this.props.getPrevOrNextItemKey(moveUpItemKey, -1);
@@ -25,7 +47,10 @@ export class ListItemCard extends Component {
             this.props.swapItems(prevMoveUpItemKey, moveUpItemKey);
         }
 
+        this.setImgDisabled(event, this.props.getItemIndex());
+
         event.stopPropagation();
+
     }
 
     moveItemDown = (event, moveDownItemKey) =>
@@ -36,6 +61,8 @@ export class ListItemCard extends Component {
         {
             this.props.swapItems(moveDownItemKey, nextMoveDownItemKey);
         }
+
+        this.setImgDisabled(event, this.props.getItemIndex());
 
         event.stopPropagation();
     }
@@ -60,13 +87,13 @@ export class ListItemCard extends Component {
                     <img 
                     src={MoveUp} 
                     alt="MoveUpButton"
-                    className="list_item_card_move_item_up_button"
+                    id="list_item_card_move_item_up_button"
                     onClick={(event) => {this.moveItemUp(event, this.props.listItem.key)}}>
                     </img>
                     <img 
                     src={MoveDown} 
                     alt="MoveDownButton"
-                    className="list_item_card_move_item_down_button"
+                    id="list_item_card_move_item_down_button"
                     onClick={(event) => {this.moveItemDown(event, this.props.listItem.key)}}>
                     </img>
                     <img 

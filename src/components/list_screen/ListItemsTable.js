@@ -47,6 +47,16 @@ export class ListItemsTable extends Component {
         }
     }
 
+    getItemIndex = (Item) =>
+    {
+        return this.props.todoList.items.indexOf(Item);
+    }
+
+    getListLength = () =>
+    {
+        return this.props.todoList.items.length;
+    }
+
     render() {
         return (
             <div id="list_items_container">
@@ -72,7 +82,9 @@ export class ListItemsTable extends Component {
                             swapItems={this.props.swapItems}
                             getPrevOrNextItemKey={this.props.getPrevOrNextItemKey}
                             deleteItem={this.props.deleteItem}
-                            editItem={this.props.editItem} />
+                            editItem={this.props.editItem}
+                            getItemIndex={this.getItemIndex.bind(this, todoItem)}
+                            getListLength={this.getListLength} />
                     ))
                 }
 

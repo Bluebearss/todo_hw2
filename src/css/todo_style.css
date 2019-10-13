@@ -128,7 +128,7 @@ body {
 .list_item_add_card:hover {
   color: var(--swatch-bright-accent);
 }
-.list_item_header_card, .list_item_card_delete_item_button, .list_item_card_move_item_up_button, .list_item_card_move_item_down_button {
+.list_item_header_card, .list_item_card_delete_item_button, #list_item_card_move_item_up_button, #list_item_card_move_item_down_button {
   background-color: var(--swatch-accent);
 }
 .list_item_task_header, .list_item_due_date_header, .list_item_status_header {
@@ -156,7 +156,7 @@ body {
   color: red;
 }
 .list_item_card_toolbar {}
-.list_item_card_delete_item_button, .list_item_card_move_item_up_button, .list_item_card_move_item_down_button
+.list_item_card_delete_item_button, #list_item_card_move_item_up_button, #list_item_card_move_item_down_button
 {
     width:  40px;
     height: 40px;
@@ -210,7 +210,7 @@ font-size: 16pt;
     font-size: 14.5pt;
 }
 
-.list_item_card_move_item_up_button.disabled, .list_item_card_move_item_down_button.disabled
+#list_item_card_move_item_up_button.disabled, #list_item_card_move_item_down_button.disabled
 {
     background-color: #D3D3D3;
     

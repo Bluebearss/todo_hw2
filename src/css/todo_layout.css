@@ -235,7 +235,7 @@ body {
   grid-column: 3 / 4;
 }
 
-.list_item_card_delete_item_button, .list_item_card_move_item_up_button, .list_item_card_move_item_down_button
+.list_item_card_delete_item_button, #list_item_card_move_item_up_button, #list_item_card_move_item_down_button
 {
     border-radius: 5px;
 }
