@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 
 export class ListHeading extends Component {
     render() {
@@ -9,6 +10,10 @@ export class ListHeading extends Component {
             </div>
         )
     }
+}
+
+ListHeading.propTypes = {
+    goHome: PropTypes.func.isRequired
 }
 
 export default ListHeading

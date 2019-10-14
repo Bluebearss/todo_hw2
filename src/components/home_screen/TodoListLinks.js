@@ -21,7 +21,9 @@ class TodoListLinks extends Component {
 
 TodoListLinks.propTypes = {
     loadList: PropTypes.func.isRequired,
-    todoLists: PropTypes.array.isRequired
+    todoLists: PropTypes.array.isRequired,
+    removeList: PropTypes.func.isRequired,
+    prependList: PropTypes.func.isRequired,
 }
 
 export default TodoListLinks;

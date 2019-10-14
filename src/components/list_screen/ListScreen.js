@@ -56,10 +56,27 @@ export class ListScreen extends Component {
                 getPrevOrNextItemKey={this.props.getPrevOrNextItemKey}
                 deleteItem={this.props.deleteItem}
                 createNewItemOnClick={this.props.createNewItemOnClick}
-                editItem={this.props.editItem} />
+                editItem={this.props.editItem}
+                getItemIndex={this.props.getItemIndex} />
             </div>
         )
     }
+}
+
+ListScreen.propTypes = {
+    goHome: PropTypes.func.isRequired,
+    todoList: PropTypes.object.isRequired,
+    changeName: PropTypes.func.isRequired,
+    changeOwner: PropTypes.func.isRequired,
+    isCurrentItemSortCriteria: PropTypes.func.isRequired,
+    sortTasks: PropTypes.func.isRequired,
+    ItemSortCriteria: PropTypes.object.isRequired,
+    swapItems: PropTypes.func.isRequired,
+    getPrevOrNextItemKey: PropTypes.func.isRequired,
+    deleteItem: PropTypes.func.isRequired,
+    createNewItemOnClick: PropTypes.func.isRequired,
+    editItem: PropTypes.func.isRequired,
+    getItemIndex: PropTypes.func.isRequired
 }
 
 export default ListScreen

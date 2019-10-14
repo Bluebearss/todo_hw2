@@ -31,7 +31,10 @@ export class HomeScreen extends Component {
 
 HomeScreen.propTypes = {
     loadList: PropTypes.func.isRequired,
-    todoLists: PropTypes.array.isRequired
+    todoLists: PropTypes.array.isRequired,
+    removeList: PropTypes.func.isRequired,
+    prependList: PropTypes.func.isRequired,
+    createNewListOnClick: PropTypes.func.isRequired
 }
 
 export default HomeScreen

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 
 export class ModalContainer extends Component {
     hideDialog = () =>
@@ -41,6 +42,12 @@ export class ModalContainer extends Component {
             </div>
         )
     }
+}
+
+ModalContainer.propTypes = {
+    todoList: PropTypes.object.isRequired,
+    removeList: PropTypes.func.isRequired,
+    goHome: PropTypes.func.isRequired
 }
 
 export default ModalContainer

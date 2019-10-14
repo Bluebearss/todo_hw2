@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import MoveUp from '../images/icons/MoveUp.png';
 import MoveDown from '../images/icons/MoveDown.png';
 import Close from '../images/icons/Close.png';
+import PropTypes from 'prop-types';
 
 export class ListItemCard extends Component {
     getCompleted()
@@ -16,25 +17,27 @@ export class ListItemCard extends Component {
         }
     }
 
-    setImgDisabled(event, ItemIndex)
+    setMoveUpImgDisabled(ItemIndex)
     {
-        console.log(ItemIndex);
-        if (ItemIndex === 0 || ItemIndex === this.props.getListLength() - 1)
+        if (ItemIndex === 0)
         {
-            if (ItemIndex === 0)
-            {
-                event.target.classList.add("disabled");
-            }
-
-            if (ItemIndex === this.props.getListLength() - 1)
-            {
-                event.target.classList.add("disabled");
-            }
+            return "disabled";
         }
         else
         {
-            document.getElementById("list_item_card_move_item_up_button").classList.remove("disabled");
-            document.getElementById("list_item_card_move_item_down_button").classList.remove("disabled");
+            return "";
+        }
+    }
+
+    setMoveDownImgDisabled(ItemIndex)
+    {
+        if (ItemIndex === this.props.getListLength() - 1)
+        {
+            return "disabled";
+        }
+        else
+        {
+            return "";
         }
     }
 
@@ -47,10 +50,7 @@ export class ListItemCard extends Component {
             this.props.swapItems(prevMoveUpItemKey, moveUpItemKey);
         }
 
-        this.setImgDisabled(event, this.props.getItemIndex());
-
         event.stopPropagation();
-
     }
 
     moveItemDown = (event, moveDownItemKey) =>
@@ -61,8 +61,6 @@ export class ListItemCard extends Component {
         {
             this.props.swapItems(moveDownItemKey, nextMoveDownItemKey);
         }
-
-        this.setImgDisabled(event, this.props.getItemIndex());
 
         event.stopPropagation();
     }
@@ -88,12 +86,14 @@ export class ListItemCard extends Component {
                     src={MoveUp} 
                     alt="MoveUpButton"
                     id="list_item_card_move_item_up_button"
+                    className={this.setMoveUpImgDisabled(this.props.getItemIndex(this.props.listItem))}
                     onClick={(event) => {this.moveItemUp(event, this.props.listItem.key)}}>
                     </img>
                     <img 
                     src={MoveDown} 
                     alt="MoveDownButton"
                     id="list_item_card_move_item_down_button"
+                    className={this.setMoveDownImgDisabled(this.props.getItemIndex(this.props.listItem))}
                     onClick={(event) => {this.moveItemDown(event, this.props.listItem.key)}}>
                     </img>
                     <img 
@@ -106,6 +106,17 @@ export class ListItemCard extends Component {
             </div>
         )
     }
+}
+
+ListItemCard.propTypes = {
+    listItem: PropTypes.object.isRequired,
+    swapItems: PropTypes.func.isRequired,
+    getPrevOrNextItemKey: PropTypes.func.isRequired,
+    deleteItem: PropTypes.func.isRequired,
+    editItem: PropTypes.func.isRequired,
+    getItemIndex: PropTypes.func.isRequired,
+    getListLength: PropTypes.func.isRequired,
+    todoList: PropTypes.object.isRequired
 }
 
 export default ListItemCard

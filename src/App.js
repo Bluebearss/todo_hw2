@@ -376,6 +376,11 @@ class App extends Component {
     this.loadList(prevCurrentList);
   }
 
+  getItemIndex = (Item) =>
+  {
+    return this.state.currentList.items.indexOf(Item);
+  }
+
   render() {
     switch(this.state.currentScreen) {
       case AppScreen.HOME_SCREEN:
@@ -400,7 +405,8 @@ class App extends Component {
                 getPrevOrNextItemKey={this.getPrevOrNextItemKey}
                 deleteItem={this.deleteItem}
                 createNewItemOnClick={this.createNewItemOnClick}
-                editItem={this.editItem} />
+                editItem={this.editItem}
+                getItemIndex={this.getItemIndex} />
 
               <ModalContainer
               todoList={this.state.currentList}

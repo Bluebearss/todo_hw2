@@ -106,8 +106,13 @@ export class ItemScreen extends Component {
 }
 
 ItemScreen.propTypes = {
-    currentScreen: PropTypes.string.isRequired,
-    todoItem: PropTypes.object.isRequired
+    todoItem: PropTypes.object.isRequired,
+    changeDescription: PropTypes.func.isRequired,
+    changeAssignedTo: PropTypes.func.isRequired,
+    changeDueDate: PropTypes.func.isRequired,
+    changeCompleted: PropTypes.func.isRequired,
+    confirmItemChanges: PropTypes.func.isRequired,
+    cancelItemChanges: PropTypes.func.isRequired 
 }
 
 export default ItemScreen

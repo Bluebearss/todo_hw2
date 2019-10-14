@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ListItemCard from './ListItemCard'
+import PropTypes from 'prop-types';
 
 export class ListItemsTable extends Component {
     processSortItemsByTask = () =>
@@ -47,11 +48,6 @@ export class ListItemsTable extends Component {
         }
     }
 
-    getItemIndex = (Item) =>
-    {
-        return this.props.todoList.items.indexOf(Item);
-    }
-
     getListLength = () =>
     {
         return this.props.todoList.items.length;
@@ -83,8 +79,9 @@ export class ListItemsTable extends Component {
                             getPrevOrNextItemKey={this.props.getPrevOrNextItemKey}
                             deleteItem={this.props.deleteItem}
                             editItem={this.props.editItem}
-                            getItemIndex={this.getItemIndex.bind(this, todoItem)}
-                            getListLength={this.getListLength} />
+                            getItemIndex={this.props.getItemIndex}
+                            getListLength={this.getListLength}
+                            todoList={this.props.todoList} />
                     ))
                 }
 
@@ -96,6 +93,19 @@ export class ListItemsTable extends Component {
             </div>
         )
     }
+}
+
+ListItemsTable.propTypes = {
+    todoList: PropTypes.object.isRequired,
+    isCurrentItemSortCriteria: PropTypes.func.isRequired,
+    sortTasks: PropTypes.func.isRequired,
+    ItemSortCriteria: PropTypes.object.isRequired,
+    swapItems: PropTypes.func.isRequired,
+    getPrevOrNextItemKey: PropTypes.func.isRequired,
+    deleteItem: PropTypes.func.isRequired,
+    createNewItemOnClick: PropTypes.func.isRequired,
+    editItem: PropTypes.func.isRequired,
+    getItemIndex: PropTypes.func.isRequired
 }
 
 export default ListItemsTable

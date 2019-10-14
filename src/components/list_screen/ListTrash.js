@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { list } from 'postcss'
 
 export class ListTrash extends Component {
     showDialogStyle = () =>
