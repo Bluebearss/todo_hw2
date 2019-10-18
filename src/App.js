@@ -4,6 +4,8 @@ import HomeScreen from './components/home_screen/HomeScreen'
 import ItemScreen from './components/item_screen/ItemScreen'
 import ListScreen from './components/list_screen/ListScreen'
 import ModalContainer from './components/list_screen/ModalContainer'
+import {jsTPS} from './todolist_jsTPS/jsTPS'
+import Todolist_Transaction from './todolist_jsTPS/Todolist_Transaction'
 
 const AppScreen = {
   HOME_SCREEN: "HOME_SCREEN",
@@ -28,6 +30,7 @@ class App extends Component {
     currentItemSortCriteria: "",
     editItem: null,
     prevCurrentList: null,
+    toDoListjsTPS: new jsTPS(),
   }
 
   goHome = () => {
@@ -240,10 +243,15 @@ class App extends Component {
     }
 
     let deleteItemIndex = items.indexOf(deleteItem);
+
+    // CREATING TRANSACTION FOR THE DELETE
+    let transaction = new Todolist_Transaction(this.makeOldList(), []);
+
     items.splice(deleteItemIndex, 1);
 
-    this.setState({currentList});
+    this.setState({currentList}, transaction.setNewToDoList(this.state.currentList));
 
+    this.state.toDoListjsTPS.addTransaction(transaction);
     event.stopPropagation();
   }
 
@@ -311,6 +319,28 @@ class App extends Component {
     this.setState({editItem});
   }
 
+  makeOldList()
+  {
+    let oldCurrentList = {};
+    oldCurrentList.key = this.state.currentList.key;
+    oldCurrentList.name = this.state.currentList.name;
+    oldCurrentList.owner = this.state.currentList.owner;
+    oldCurrentList.items = [];
+    
+    for (var j = 0; j < this.state.currentList.items.length; j++)
+    {
+      let item = {};
+      item.key = this.state.currentList.items[j].key;
+      item.assigned_to = this.state.currentList.items[j].assigned_to;
+      item.completed = this.state.currentList.items[j].completed;
+      item.description = this.state.currentList.items[j].description;
+      item.due_date = this.state.currentList.items[j].due_date;
+      oldCurrentList.items.push(item);
+    }
+
+    return oldCurrentList;
+  }
+
   editItem = (itemKey) =>
   {
     let itemToEdit = this.state.currentList.items[0];
@@ -329,24 +359,7 @@ class App extends Component {
     {
       editItem = itemToEdit;
 
-      let oldCurrentList = {};
-      oldCurrentList.key = this.state.currentList.key;
-      oldCurrentList.name = this.state.currentList.name;
-      oldCurrentList.owner = this.state.currentList.owner;
-      oldCurrentList.items = [];
-      
-      for (var j = 0; j < this.state.currentList.items.length; j++)
-      {
-        let item = {};
-        item.key = this.state.currentList.items[j].key;
-        item.assigned_to = this.state.currentList.items[j].assigned_to;
-        item.completed = this.state.currentList.items[j].completed;
-        item.description = this.state.currentList.items[j].description;
-        item.due_date = this.state.currentList.items[j].due_date;
-        oldCurrentList.items.push(item);
-      }
-
-      this.setState({editItem}, () => {this.loadItem(this.state.editItem, oldCurrentList)});
+      this.setState({editItem}, () => {this.loadItem(this.state.editItem, this.makeOldList())});
     }
   }
 
@@ -381,6 +394,15 @@ class App extends Component {
     return this.state.currentList.items.indexOf(Item);
   }
 
+  setCurrentList = (currentList) =>
+  {
+    if (currentList)
+    {
+      this.setState({currentList});
+    }
+
+  }
+
   render() {
     switch(this.state.currentScreen) {
       case AppScreen.HOME_SCREEN:
@@ -406,7 +428,9 @@ class App extends Component {
                 deleteItem={this.deleteItem}
                 createNewItemOnClick={this.createNewItemOnClick}
                 editItem={this.editItem}
-                getItemIndex={this.getItemIndex} />
+                getItemIndex={this.getItemIndex}
+                toDoListjsTPS={this.state.toDoListjsTPS}
+                setCurrentList={this.setCurrentList} />
 
               <ModalContainer
               todoList={this.state.currentList}

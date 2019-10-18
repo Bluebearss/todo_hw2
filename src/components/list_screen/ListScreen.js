@@ -23,9 +23,25 @@ export class ListScreen extends Component {
             return "Unknown";
     }
 
+    onKeyDown(event)
+    {
+        if (event.ctrlKey && event.keyCode === 90)
+        {
+            this.props.setCurrentList(this.props.toDoListjsTPS.undoTransaction());
+        }
+
+        if (event.ctrlKey && event.keyCode === 89)
+        {
+            this.props.setCurrentList(this.props.toDoListjsTPS.doTransaction());
+        }
+    }
+
     render() {
         return (
-            <div id="todo_list">
+            <div 
+            id="todo_list"
+            tabIndex="0"
+            onKeyDown={(event) => {this.onKeyDown(event)}}>
                 <br /> 
                 <ListHeading goHome={this.props.goHome} />
                 <ListTrash />
