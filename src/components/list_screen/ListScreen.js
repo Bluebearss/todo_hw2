@@ -23,11 +23,25 @@ export class ListScreen extends Component {
             return "Unknown";
     }
 
+    componentDidMount()
+    {
+        document.addEventListener('keydown', this.onKeyDown.bind(this));
+    }
+
     onKeyDown(event)
     {
+        event.stopImmediatePropagation();
         if (event.ctrlKey && event.keyCode === 90)
         {
-            this.props.setCurrentList(this.props.toDoListjsTPS.undoTransaction());
+            let result = this.props.toDoListjsTPS.undoTransaction();
+            if (typeof result === 'string')
+            {
+                this.props.setCurrentName(result);
+            }
+            else
+            {
+                this.props.setCurrentList(result);
+            }
         }
 
         if (event.ctrlKey && event.keyCode === 89)
@@ -40,8 +54,9 @@ export class ListScreen extends Component {
         return (
             <div 
             id="todo_list"
-            tabIndex="0"
-            onKeyDown={(event) => {this.onKeyDown(event)}}>
+            // tabIndex="0"
+            // onKeyDown={(event) => {this.onKeyDown(event)}}
+            >
                 <br /> 
                 <ListHeading goHome={this.props.goHome} />
                 <ListTrash />

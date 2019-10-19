@@ -53,15 +53,21 @@ class App extends Component {
   changeName = (event) =>
   {
     let currentList = this.state.currentList;
+    let oldName = JSON.parse(JSON.stringify(currentList.name));
+    let transaction = new Todolist_Transaction(oldName, "");
     currentList.name = event.target.value;
-    this.setState({currentList});
+    this.setState({currentList}, () => {transaction.setNewToDoList(JSON.parse(JSON.stringify(currentList.name)))});
+    this.state.toDoListjsTPS.addTransaction(transaction);
   }
 
   changeOwner = (event) =>
   {
     let currentList = this.state.currentList;
+    let oldOwner = JSON.parse(JSON.stringify(currentList.owner));
+    let transaction = new Todolist_Transaction(oldOwner, "");
     currentList.owner = event.target.value;
-    this.setState({currentList});
+    this.setState({currentList}, () => {transaction.setNewToDoList(JSON.parse(JSON.stringify(currentList.owner)))});
+    this.state.toDoListjsTPS.addTransaction(transaction);
   }
 
   removeList = (listToRemove) =>
@@ -131,9 +137,11 @@ class App extends Component {
     let currentList = this.state.currentList;
 
     currentItemSortCriteria = sortingCriteria;
+    let transaction = new Todolist_Transaction(this.makeOldList(), []);
     this.setState({currentItemSortCriteria}, () => {currentList.items.sort(this.compare)});
 
-    this.setState({currentList}, () => {this.loadList(this.state.currentList)});
+    this.setState({currentList}, () => {transaction.setNewToDoList(this.makeOldList()); this.loadList(this.state.currentList)});
+    this.state.toDoListjsTPS.addTransaction(transaction);
   }
 
   compare = (item1, item2) =>
@@ -220,10 +228,15 @@ class App extends Component {
       let item1Index = items.indexOf(item1);
       let item2Index = items.indexOf(item2);
 
+      // CREATING TRANSACTION FOR MOVING UP/DOWN
+      let transaction = new Todolist_Transaction(this.makeOldList(), []);
+
       items[item1Index] = items[item2Index];
       items[item2Index] = item1;
 
-      this.setState({currentList});
+      this.setState({currentList}, () => {transaction.setNewToDoList(this.makeOldList())});
+
+      this.state.toDoListjsTPS.addTransaction(transaction);
     }
   }
 
@@ -249,7 +262,7 @@ class App extends Component {
 
     items.splice(deleteItemIndex, 1);
 
-    this.setState({currentList}, transaction.setNewToDoList(this.state.currentList));
+    this.setState({currentList}, () => {transaction.setNewToDoList(this.makeOldList())});
 
     this.state.toDoListjsTPS.addTransaction(transaction);
     event.stopPropagation();
@@ -341,6 +354,28 @@ class App extends Component {
     return oldCurrentList;
   }
 
+  makeOldPrevList()
+  {
+    let oldCurrentList = {};
+    oldCurrentList.key = this.state.prevCurrentList.key;
+    oldCurrentList.name = this.state.prevCurrentList.name;
+    oldCurrentList.owner = this.state.prevCurrentList.owner;
+    oldCurrentList.items = [];
+    
+    for (var j = 0; j < this.state.prevCurrentList.items.length; j++)
+    {
+      let item = {};
+      item.key = this.state.prevCurrentList.items[j].key;
+      item.assigned_to = this.state.prevCurrentList.items[j].assigned_to;
+      item.completed = this.state.prevCurrentList.items[j].completed;
+      item.description = this.state.prevCurrentList.items[j].description;
+      item.due_date = this.state.prevCurrentList.items[j].due_date;
+      oldCurrentList.items.push(item);
+    }
+
+    return oldCurrentList;
+  }
+
   editItem = (itemKey) =>
   {
     let itemToEdit = this.state.currentList.items[0];
@@ -367,17 +402,22 @@ class App extends Component {
   {
     let currentList = this.state.currentList;
     let editItem = this.state.editItem;
+    let transaction = new Todolist_Transaction(this.makeOldList(), []);
 
     if (editItem != null)
     {
       if (!currentList.items.includes(editItem))
       {
         currentList.items.push(editItem);
-        this.setState({currentList}, () => {this.loadList(currentList)});
+        this.setState({currentList}, () => {transaction.setNewToDoList(this.makeOldList()); this.loadList(currentList)});
+        this.state.toDoListjsTPS.addTransaction(transaction);
       }
       else
       {
+        let editTransaction = new Todolist_Transaction(this.makeOldPrevList(), []);
         this.loadList(currentList);
+        editTransaction.setNewToDoList(this.makeOldList());
+        this.state.toDoListjsTPS.addTransaction(editTransaction);
       }
     }
   }
@@ -401,6 +441,17 @@ class App extends Component {
       this.setState({currentList});
     }
 
+  }
+
+  setCurrentName = (currentName) =>
+  {
+    let currentList = this.state.currentList;
+    let currentListName = currentList.name;
+    currentListName = currentName;
+    if (currentListName)
+    {
+      this.setState({currentList});
+    }
   }
 
   render() {
@@ -430,7 +481,8 @@ class App extends Component {
                 editItem={this.editItem}
                 getItemIndex={this.getItemIndex}
                 toDoListjsTPS={this.state.toDoListjsTPS}
-                setCurrentList={this.setCurrentList} />
+                setCurrentList={this.setCurrentList}
+                setCurrentName={this.setCurrentName} />
 
               <ModalContainer
               todoList={this.state.currentList}
